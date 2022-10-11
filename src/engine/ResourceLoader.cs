@@ -11,6 +11,10 @@ class ResourceLoader
 
     public string LoadString(string resourceName)
     {
+#if (DEBUG)
+        Console.WriteLine("Loading resource: " + resourceName);
+        return File.ReadAllText(ToPath(resourceName));
+#endif
         using var stream = this.GetType().Assembly.GetManifestResourceStream($"{this.assemblyName}.{resourceName}");
         using var reader = new StreamReader(stream!);
         return reader.ReadToEnd();
@@ -30,5 +34,17 @@ class ResourceLoader
         var handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
         var ptr = handle.AddrOfPinnedObject();
         return (ptr, bytes.Length);
+    }
+
+    public void SaveString(string resourceName, string content)
+    {
+        using var stream = new StreamWriter(ToPath(resourceName));
+        stream.Write(content);
+    }
+
+    private static string ToPath(string resourceName)
+    {
+        var s = resourceName.Split('.');
+        return String.Join('/', s[..^1]) + "." + s[^1];
     }
 }

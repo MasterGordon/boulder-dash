@@ -7,7 +7,7 @@ class MainMenu : Scene
         context.fontManager.RegisterFont("MainMenu", "assets.font.ttf", 24);
     }
 
-    public override void Update(double dt, Context context)
+    public override void Update(Context context)
     {
         x += dir ? 10 : -10;
         var windowSize = context.window.GetSize();
@@ -18,6 +18,10 @@ class MainMenu : Scene
         if (x < 0)
         {
             dir = true;
+        }
+        if (GameState.keyState.isPressed(Control.CONFIRM))
+        {
+            GameState.sceneManager.ChangeScene("level", context);
         }
     }
 

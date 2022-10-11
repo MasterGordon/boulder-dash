@@ -7,6 +7,7 @@ enum Control
     LEFT,
     RIGHT,
     STAY,
+    CONFIRM,
 }
 
 static class ControlKeyExtension
@@ -25,6 +26,8 @@ static class ControlKeyExtension
                 return SDL_Keycode.SDLK_d;
             case Control.STAY:
                 return SDL_Keycode.SDLK_LCTRL;
+            case Control.CONFIRM:
+                return SDL_Keycode.SDLK_SPACE;
             default:
                 throw new ArgumentException("Invalid control");
         }

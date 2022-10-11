@@ -12,7 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="ppy.SDL2-CS" Version="1.0.596-alpha" />
   </ItemGroup>
   <ItemGroup>
