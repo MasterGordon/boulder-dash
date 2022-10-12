@@ -12,8 +12,8 @@ class Diamond : Rock
     public override void Update(Context context, Map map, int x, int y)
     {
         ++i;
-        i = i % 128;
-        tileX = (int)(i * (8.0 / 128.0));
+        i = i % 512;
+        tileX = (int)(i * (8.0 / 512.0));
     }
 
     public override void Draw(Context context, int x, int y)

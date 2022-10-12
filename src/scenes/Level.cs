@@ -12,7 +12,7 @@ enum TileType : int
 class Level : Scene
 {
     private Map? map;
-    private int debugSelectedTile = 0;
+    private int debugSelectedTile = 1;
     private TileSet? tileSet;
     private Dictionary<int, Tile>? tiles;
 
