@@ -16,6 +16,7 @@ class Level : Scene
 {
     private Map? map;
     private int debugSelectedTile = 1;
+    private bool drawing = false;
     private TileSet? tileSet;
     private Dictionary<int, Tile>? tiles;
 
@@ -42,7 +43,7 @@ class Level : Scene
         this.map!.Draw(context);
 #if (DEBUG)
         context.renderer.SetColor(0, 0, 0);
-        context.renderer.DrawRect(0, 0, 34, 34);
+        context.renderer.DrawRect(0, 0, (int)(34 * GameState.scale), (int)(34 * GameState.scale));
         if (tiles?.ContainsKey(debugSelectedTile) == true)
         {
             tiles[debugSelectedTile]!.Draw(context, 0, 0);
@@ -50,7 +51,7 @@ class Level : Scene
         else
         {
             context.renderer.SetColor(255, 0, 255);
-            context.renderer.DrawRect(0, 0, 32, 32);
+            context.renderer.DrawRect(0, 0, (int)(32 * GameState.scale), (int)(32 * GameState.scale));
         }
 #endif
     }
@@ -60,12 +61,39 @@ class Level : Scene
         this.map!.Update(context);
     }
 
-    public override void OnMouseDown(Context context, byte button, int x, int y)
+    public override void OnMouseUp(Context context, byte button, int x, int y)
     {
-        var tileX = x / 32;
-        var tileY = y / 32;
         if (button == SDL2.SDL.SDL_BUTTON_LEFT)
         {
+            this.drawing = false;
+        }
+    }
+
+    public override void OnMouseMotion(Context context, int x, int y)
+    {
+        if (x < 0 || y < 0)
+        {
+            return;
+        }
+        if (this.drawing)
+        {
+            var tileX = (int)(x / GameState.scale) / 32;
+            var tileY = (int)(y / GameState.scale) / 32;
+            this.map!.SetTile(tileX, tileY, debugSelectedTile);
+        }
+    }
+
+    public override void OnMouseDown(Context context, byte button, int x, int y)
+    {
+        var tileX = (int)(x / GameState.scale) / 32;
+        var tileY = (int)(y / GameState.scale) / 32;
+        if (button == SDL2.SDL.SDL_BUTTON_LEFT)
+        {
+            this.drawing = true;
+            if (x < 0 || y < 0)
+            {
+                return;
+            }
             this.map!.SetTile(tileX, tileY, this.debugSelectedTile);
         }
         if (button == SDL2.SDL.SDL_BUTTON_MIDDLE)
@@ -85,16 +113,24 @@ class Level : Scene
         {
             this.debugSelectedTile = number;
         }
-        if (key == SDL2.SDL.SDL_Keycode.SDLK_e && mod == SDL2.SDL.SDL_Keymod.KMOD_CTRL)
+        if (key == SDL2.SDL.SDL_Keycode.SDLK_e && mod == SDL2.SDL.SDL_Keymod.KMOD_LCTRL)
         {
             Console.WriteLine("Saving...");
             var json = this.map!.ToJson();
             context.resourceLoader.SaveString("assets.level1.json", json);
         }
-        if (key == SDL2.SDL.SDL_Keycode.SDLK_r && mod == SDL2.SDL.SDL_Keymod.KMOD_CTRL)
+        if (key == SDL2.SDL.SDL_Keycode.SDLK_r && mod == SDL2.SDL.SDL_Keymod.KMOD_LCTRL)
         {
             Console.WriteLine("Reloading...");
             this.Create(context);
+        }
+        if (key == SDL2.SDL.SDL_Keycode.SDLK_p)
+        {
+            GameState.scale += 0.25;
+        }
+        if (key == SDL2.SDL.SDL_Keycode.SDLK_o)
+        {
+            GameState.scale -= 0.25;
         }
     }
 }

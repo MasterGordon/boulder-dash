@@ -43,6 +43,14 @@ class BoulderDash : Game
             {
                 GameState.sceneManager.GetCurrentScene()?.OnMouseDown(context, e.button.button, e.button.x, e.button.y);
             }
+            if (e.type == SDL_EventType.SDL_MOUSEBUTTONUP)
+            {
+                GameState.sceneManager.GetCurrentScene()?.OnMouseUp(context, e.button.button, e.button.x, e.button.y);
+            }
+            if (e.type == SDL_EventType.SDL_MOUSEMOTION)
+            {
+                GameState.sceneManager.GetCurrentScene()?.OnMouseMotion(context, e.button.x, e.button.y);
+            }
         }
         GameState.keyState = new KeyState();
         GameState.tick = (GameState.tick + 1);

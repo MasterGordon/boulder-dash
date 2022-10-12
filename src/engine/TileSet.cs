@@ -36,10 +36,10 @@ static class TileSetRendererExtension
         };
         var dst = new SDL_Rect
         {
-            x = x,
-            y = y,
-            w = tileSet.Resolution,
-            h = tileSet.Resolution
+            x = (int)((x - GameState.camX) * GameState.scale),
+            y = (int)((y - GameState.camY) * GameState.scale),
+            w = (int)(tileSet.Resolution * GameState.scale),
+            h = (int)(tileSet.Resolution * GameState.scale)
         };
         SDL_RenderCopy(renderer.GetRaw(), tileSet.Texture, ref src, ref dst);
     }
