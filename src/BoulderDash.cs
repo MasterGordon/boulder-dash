@@ -45,7 +45,7 @@ class BoulderDash : Game
             }
         }
         GameState.keyState = new KeyState();
-        GameState.tick = (GameState.tick + 1) % Game.TPS;
+        GameState.tick = (GameState.tick + 1);
         GameState.sceneManager.GetCurrentScene()?.Update(context);
     }
 

@@ -6,6 +6,9 @@ enum TileType : int
     DIAMOND = 3,
     ROCK = 4,
     WALL = 5,
+    ROCK_FALLING = 6,
+    DIAMOND_FALLING = 7,
+    EXPLOSION = 8,
     PLAYER = 9
 }
 
@@ -25,8 +28,11 @@ class Level : Scene
         tiles.Add((int)TileType.BORDER, new Tile(tileSet, 1, 6));
         tiles.Add((int)TileType.DIAMOND, new Diamond(tileSet, 0, 10));
         tiles.Add((int)TileType.ROCK, new Rock(tileSet, 0, 7));
+        tiles.Add((int)TileType.ROCK_FALLING, new RockFalling(tileSet, 0, 7));
+        tiles.Add((int)TileType.DIAMOND_FALLING, new DiamondFalling(tileSet, 0, 10));
         tiles.Add((int)TileType.WALL, new Tile(tileSet, 3, 6));
         tiles.Add((int)TileType.PLAYER, new Player(tileSet, 0, 0));
+        tiles.Add((int)TileType.EXPLOSION, new Explosion(tileSet, 2, 0));
         this.map = new Map(levelJson, tiles);
         this.map.Dump();
     }
