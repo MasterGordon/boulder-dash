@@ -4,6 +4,7 @@ using System.Text.Json;
 class Map : Actor
 {
     private int[][] map;
+    private int[][] mapSnapshot;
     private Dictionary<int, Tile> tiles;
 
     public Map(uint width, uint height, Dictionary<int, Tile> tiles)
@@ -13,6 +14,7 @@ class Map : Actor
         {
             this.map[i] = new int[width];
         }
+        this.mapSnapshot = this.map.Select(a => a.ToArray()).ToArray();
         this.tiles = tiles;
     }
 
@@ -25,6 +27,7 @@ class Map : Actor
             throw new Exception("Invalid map");
         }
         this.map = map;
+        this.mapSnapshot = this.map.Select(a => a.ToArray()).ToArray();
         this.tiles = tiles;
     }
 
@@ -70,6 +73,7 @@ class Map : Actor
                 }
             }
         }
+        this.map = this.mapSnapshot.Select(a => a.ToArray()).ToArray();
     }
 
     public bool IsSolid(int x, int y)
@@ -94,41 +98,41 @@ class Map : Actor
 
     public void SetTile(int x, int y, int tile)
     {
-        if (this.map.Length <= y)
+        if (this.mapSnapshot.Length <= y)
         {
-            // expand map
+            // expand map2
             var newMap = new int[y + 1][];
             for (int i = 0; i < y + 1; i++)
             {
-                newMap[i] = new int[this.map[0].Length];
+                newMap[i] = new int[this.mapSnapshot[0].Length];
             }
-            for (int i = 0; i < this.map.Length; i++)
+            for (int i = 0; i < this.mapSnapshot.Length; i++)
             {
-                for (int j = 0; j < this.map[i].Length; j++)
+                for (int j = 0; j < this.mapSnapshot[i].Length; j++)
                 {
-                    newMap[i][j] = this.map[i][j];
+                    newMap[i][j] = this.mapSnapshot[i][j];
                 }
             }
-            this.map = newMap;
+            this.mapSnapshot = newMap;
         }
-        if (this.map[y].Length <= x)
+        if (this.mapSnapshot[y].Length <= x)
         {
-            // expand map
-            var newMap = new int[this.map.Length][];
-            for (int i = 0; i < this.map.Length; i++)
+            // expand map2
+            var newMap = new int[this.mapSnapshot.Length][];
+            for (int i = 0; i < this.mapSnapshot.Length; i++)
             {
                 newMap[i] = new int[x + 1];
             }
-            for (int i = 0; i < this.map.Length; i++)
+            for (int i = 0; i < this.mapSnapshot.Length; i++)
             {
-                for (int j = 0; j < this.map[i].Length; j++)
+                for (int j = 0; j < this.mapSnapshot[i].Length; j++)
                 {
-                    newMap[i][j] = this.map[i][j];
+                    newMap[i][j] = this.mapSnapshot[i][j];
                 }
             }
-            this.map = newMap;
+            this.mapSnapshot = newMap;
         }
-        this.map[y][x] = tile;
+        this.mapSnapshot[y][x] = tile;
     }
 
     public int GetTile(int x, int y)

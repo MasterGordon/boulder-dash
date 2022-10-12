@@ -85,13 +85,13 @@ class Level : Scene
         {
             this.debugSelectedTile = number;
         }
-        if (key == SDL2.SDL.SDL_Keycode.SDLK_e && mod == SDL2.SDL.SDL_Keymod.KMOD_LCTRL)
+        if (key == SDL2.SDL.SDL_Keycode.SDLK_e && mod == SDL2.SDL.SDL_Keymod.KMOD_CTRL)
         {
             Console.WriteLine("Saving...");
             var json = this.map!.ToJson();
             context.resourceLoader.SaveString("assets.level1.json", json);
         }
-        if (key == SDL2.SDL.SDL_Keycode.SDLK_r && mod == SDL2.SDL.SDL_Keymod.KMOD_LCTRL)
+        if (key == SDL2.SDL.SDL_Keycode.SDLK_r && mod == SDL2.SDL.SDL_Keymod.KMOD_CTRL)
         {
             Console.WriteLine("Reloading...");
             this.Create(context);
